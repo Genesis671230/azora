@@ -1,0 +1,40 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: |
+        export NODE_OPTIONS="--max_old_space_size=8192"
+        npm run build
+
+    - name: Deploy
+      env:
+        SSH_SERVER_PRIVATE_KEY: ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+      run: |
+        eval "$(ssh-agent -s)"
+        
+        echo "$SSH_SERVER_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+
+        ssh-add -l
+
+        ssh -o StrictHostKeyChecking=no root@ip "rm -rf /var/www/*"
+        scp -r ./build/* root@ip:/var/www/:folder/
