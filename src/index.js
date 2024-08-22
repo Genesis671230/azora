@@ -19,15 +19,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import store from "./redux/store/store";
-import { fetchDealsAsync } from "features/deals/dealSlice";
 import { fetchUsersAsync } from "features/users/userSlice";
-// store.dispatch(fetchRevenueReportsAsync())
-// store.dispatch(fetchInvoicesAsync())
-store.dispatch(fetchDealsAsync());
-// store.dispatch(fetchPropertiesAsync())
-// store.dispatch(fetchLocationsAsync())
-// store.dispatch(fetchLeadsAsync())
-// store.dispatch(fetchContactsAsync())
+
 store.dispatch(fetchUsersAsync());
 function App() {
   const token =

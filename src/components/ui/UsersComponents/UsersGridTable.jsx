@@ -37,7 +37,6 @@ import { IconButton, Tooltip } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteApi } from "services/api";
 import { setUserIds, getSelectedUsersId } from "features/users/userSlice";
-import { selectDeals } from "features/deals/dealSlice";
 import { IoDownload } from "react-icons/io5";
 import { constant } from "constant";
 import {

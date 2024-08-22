@@ -97,6 +97,15 @@ console.log(values,"this is values")
 
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+        <div className="hidden h-[100vh] overflow-hidden bg-muted lg:block">
+        <img
+          src={reception}
+          alt="Image"
+          width="1280"
+          height="300"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
+      </div>
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <Card className="mx-auto max-w-sm">
@@ -209,15 +218,7 @@ console.log(values,"this is values")
           </div> */}
         </div>
       </div>
-      <div className="hidden h-[100vh] overflow-hidden bg-muted lg:block">
-        <img
-          src={reception}
-          alt="Image"
-          width="1280"
-          height="300"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
-      </div>
+    
     </div>
   );
 };

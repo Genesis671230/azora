@@ -3,13 +3,7 @@ import { HiOutlineDocumentReport, HiUsers } from "react-icons/hi";
 import { MdContacts, MdHome, MdLeaderboard, MdLock } from "react-icons/md";
 // icon
 import React from "react";
-import { LiaFileInvoiceSolid, LiaSearchLocationSolid } from "react-icons/lia";
-import { LuBuilding2 } from "react-icons/lu";
-import { PiPhoneCallBold } from "react-icons/pi";
-import { SiGooglemeet } from "react-icons/si";
-import { GrMapLocation, GrProjects } from "react-icons/gr";
 
-const Deals = React.lazy(() => import("features/deals/Deals"));
 // const RevenueReportsView = React.lazy(() => import("features/revenue-report/RevenueReportView"));
 // Admin Imports
 const MainDashboard = React.lazy(() => import("views/admin/default"));
@@ -108,14 +102,7 @@ const routes = [
     component: Users,
   },
 
-  {
-    name: "Inventory",
-    layout: "/admin",
-    both: true,
-    path: "/inventory",
-    icon: <Icon as={LuBuilding2} width="20px" height="20px" color="inherit" />,
-    component: Deals,
-  },
+ 
   // {
   //   name: "Deal View",
   //   layout: "/admin",
