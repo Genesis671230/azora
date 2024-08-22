@@ -48,8 +48,8 @@ export default function HeaderLinks(props) {
 
 
 	const user = loginUser?.firstName + " " + loginUser?.lastName;
-
-		const imageUrl = `${constant.baseUrl}api/user/user-documents/${ loginUser?.profilePicture[0]?.split("/")[3]}`;
+	console.log(loginUser, "user nav");
+	const imageUrl = `${constant.baseUrl}api/user/user-documents/${loginUser?.profilePicture[0]?.path}`;
 
 
 	const userId = JSON.parse(localStorage.getItem("user"))?._id;
@@ -69,7 +69,7 @@ export default function HeaderLinks(props) {
 	const logOut = (message) => {
 		localStorage.clear();
 		sessionStorage.clear();
-		navigate("/auth");
+		navigate("/auth/sign-in");
 		if (message) {
 			toast.error(message);
 		} else {

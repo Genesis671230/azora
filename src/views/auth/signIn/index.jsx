@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 // Chakra imports
 import {
   Box,
-  Button, Checkbox, Flex,
+  Checkbox, Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -29,6 +29,7 @@ import { postApi } from "services/api";
 import { loginSchema } from "schema";
 import { toast } from "react-toastify";
 import Spinner from "components/spinner/Spinner";
+import { Button } from "components/ui/button";
 
 function SignIn() {
   // Chakra color mode
@@ -191,7 +192,7 @@ function SignIn() {
               </Flex>
               <Button
                 fontSize='sm'
-                variant='brand'
+                className='w-full'
                 fontWeight='500'
                 w='100%'
                 h='50'

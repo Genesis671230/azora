@@ -29,7 +29,7 @@ router.put(
   user.upload.fields([
     {
       name: "profilePicture",
-      maxCount: 10,
+      maxCount: 1,
     },
    
   ]),

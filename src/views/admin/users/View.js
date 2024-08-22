@@ -388,8 +388,8 @@ const View = () => {
                             width="100%"
                           >
                             {data?.profilePicture?.map((item, index) => {
-                              const imageUrl = `${constant.baseUrl}api/user/user-documents/${item.split("/")[3]}`;
-                              console.log(imageUrl);
+                              const imageUrl = `${constant.baseUrl}api/user/user-documents/${item?.split("/")[3]}`;
+                              console.log(imageUrl)
                               return (
                                 <div className="flex w-full">
                                   
@@ -403,10 +403,6 @@ const View = () => {
                                   alt="Profile Picture"
                                   className="rounded-full object-cover  "
                                   />
-                                  <div className="flex flex-col  justify-center ml-2">
-                                  <Text fontSize="lg" fontWeight="bold" color={"blackAlpha.900"}>{data?.firstName}</Text>
-                                  <Text fontSize="lg" fontWeight="normal" color={"blackAlpha.700"}>{data?.lastName}</Text>
-                                  </div>
                                   </div>
                               );
                             })}

@@ -158,19 +158,21 @@ const deleteMany = async (req, res) => {
 };
 
 const edit = async (req, res) => {
+  const { profilePicture } = req?.files;
+  console.log(req.files, "this is edit center");
   try {
-    let profilePicture = [];
-    if (req.files && req.files.profilePicture) {
-      profilePicture = [req.files.profilePicture[0].path];
-    }
+    let result = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          ...req.body,
+          profilePicture: profilePicture ? [profilePicture[0].path] : [],
+        },
+      },
+      { new: true }
+    );
 
-      let result = await User.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: {...req.body,img} },
-        { new: true }
-      );
-      
-      res.status(200).json(result);
+    res.status(200).json(result);
   } catch (err) {
     console.error("Failed to Update User:", err);
     res.status(400).json({ error: "Failed to Update User" });
@@ -213,6 +215,7 @@ const login = async (req, res) => {
 
 module.exports = {
   register,
+  upload,
   login,
   adminRegister,
   index,
@@ -220,5 +223,4 @@ module.exports = {
   view,
   deleteData,
   edit,
-  upload,
 };

@@ -32,20 +32,16 @@ import { CrossIcon, UploadCloudIcon } from "lucide-react";
 import { constant } from "constant.js";
 import { fetchUsersAsync } from "features/users/userSlice.js";
 
-
 function UsersEdit({ className, dealRowData, setIsModalOpen }) {
   const [isLoding, setIsLoding] = React.useState(false);
   const dispatch = useDispatch();
 
-
-  
   const initialValues = {
-    firstName: dealRowData?.firstName ?? "",  
+    firstName: dealRowData?.firstName ?? "",
     lastName: dealRowData?.lastName ?? "",
     email: dealRowData?.email ?? "",
     password: dealRowData?.password ?? "",
     profilePicture: dealRowData?.profilePicture ?? [],
-    
   };
 
   const formik = useFormik({
@@ -72,9 +68,28 @@ function UsersEdit({ className, dealRowData, setIsModalOpen }) {
   const EditData = async () => {
     try {
       setIsLoding(true);
-      let response = await putApi(`api/user/edit/${dealRowData._id}`, values);
+      const formData = new FormData();
+
+      if (values?.profilePicture?.length > 0) {
+        values?.profilePicture?.forEach((file) => {
+          formData?.append("profilePicture", file);
+        });
+      }
+
+      const res = Object.entries(values);
+      res.forEach((item) => {
+        if (!["profilePicture"].includes(item[0])) {
+          formData.append(item[0], item[1]);
+        }
+      });
+
+      console.log(values, formData, "this is form data");
+
+      let response = await putApi(`api/user/edit/${dealRowData._id}`, formData);
       if (response.status === 200) {
-        toast.success("Data Edited Successfully");
+        console.log(formik);
+
+        toast.success("Data Submitted Successfully");
         dispatch(fetchUsersAsync());
         handleCancel();
       }
@@ -89,7 +104,7 @@ function UsersEdit({ className, dealRowData, setIsModalOpen }) {
   const handleUnselectImage = (pathToRemove) => {
     //   console.log(formik.initialValues.tenancyContract, "this is picture")
 
-    const updatedContract = formik.values.tenancyContract.filter(
+    const updatedContract = formik.values.profilePicture.filter(
       (item) => item.path !== pathToRemove
     );
 
@@ -195,7 +210,7 @@ function UsersEdit({ className, dealRowData, setIsModalOpen }) {
 
       <div>
         <Label display="flex" ms="4px" fontSize="sm" fontWeight="500" mb="8px">
-        profilePicture
+          profilePicture
         </Label>
 
         <Dropzone
@@ -215,35 +230,54 @@ function UsersEdit({ className, dealRowData, setIsModalOpen }) {
             </Box>
           }
         />
-        {values.profilePicture?.length > 0 &&
-          values.profilePicture.map((item) => {
-            const fileLink = `${constant.baseUrl}api/user/user-documents/${
-              typeof item.path === "string" ? item?.path.split("/")[3] : ""
-            }`;
-            console.log(fileLink);
-            return (
-              // <div onClick={onRowClicked}>
-              <>
-                <div className="w-[10rem] h-[10rem] relative">
-                  <span className="absolute z-10 top-2 right-1 bg-white p-1 rounded-full hover:scale-110 shadow-md">
-                    <Cross1Icon
-                      onClick={() => handleUnselectImage(item.path)}
-                      className=" text-black  rounded-full   h-4 w-4 cursor-pointer "
+        <div className="flex flex-wrap gap-2">
+          {values.profilePicture.length > 0 &&
+            values.profilePicture.map((item) => {
+              const fileLink = `${constant.baseUrl}api/user/user-documents/${
+                item.path ? item?.path : item?.split("/")[3]
+              }`;
+              console.log(fileLink, item, "this is file link");
+
+              const blob = new Blob([item], {
+                type: "application/octet-stream",
+              });
+
+              return (
+                // <div onClick={onRowClicked}>
+                <>
+                  <div className="w-[10rem] h-[10rem] relative">
+                    <span className="absolute z-10 top-2 right-1 bg-white p-1 rounded-full hover:scale-110 shadow-md">
+                      <Cross1Icon
+                        onClick={() => handleUnselectImage(item.path)}
+                        className=" text-black  rounded-full   h-4 w-4 cursor-pointer "
+                      />
+                    </span>
+                    <img
+                      onClick={() =>
+                        setFieldValue(
+                          "profilePicture",
+                          values.profilePicture.filter(
+                            (img) => img !== fileLink || img.path !== item.path
+                          )
+                        )
+                      }
+                      className="w-full h-full object-cover rounded-md shadow-md"
+                      src={
+                        typeof item === "string"
+                          ? fileLink
+                          : URL.createObjectURL(blob)
+                      }
+                      alt=""
+                      srcset=" "
                     />
-                  </span>
-                  <img
-                    onClick={() => handleFileClick(fileLink)}
-                    className="w-full h-full object-cover rounded-md shadow-md"
-                    src={fileLink}
-                    alt=""
-                    srcset=" "
-                  />
-                </div>
-              </>
-              // <Button onClick={()=>handleOpenModal(params)}>Edit</Button>
-              // </div>
-            );
-          })}
+                  </div>
+                </>
+                // <Button onClick={()=>handleOpenModal(params)}>Edit</Button>
+                // </div>
+              );
+            })}
+        </div>
+        
       </div>
 
       <DrawerFooter className="pt-2">
